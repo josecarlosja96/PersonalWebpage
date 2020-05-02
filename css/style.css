@@ -46,7 +46,9 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -ms-overflow-style: scrollbar;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
+  scroll-behavior: smooth;
+}
 
 @-ms-viewport {
   width: device-width; }
@@ -8326,6 +8328,10 @@ textarea.form-control {
         .comment-list li .comment-body .reply:hover {
           color: #fff;
           background: black; }
+
+.scrolling-box {
+  scroll-behavior: smooth;
+}
 
 .search-form {
   background: #fafafa;
