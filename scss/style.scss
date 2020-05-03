@@ -1547,3 +1547,283 @@ textarea.form-control {
     stroke-dashoffset: -136px;
   }
 }
+
+// based on https://codepen.io/ellgine/pen/EjeXOZ
+
+$colors: (
+    background: #1d1f20,
+    text: #eee
+);
+
+$font: (
+    family: sans-serif,
+    size: 24px,
+    letter-spacing: 0
+);
+
+$config: (
+    animated: false,
+    nb-letters: 16,
+    animation-length: 4s,
+    mask-letters: (
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+    )
+);
+
+// ----------------------------------
+
+@function color($value) {
+    @return map-get($colors, $value);
+}
+
+@function font($value) {
+    @return map-get($font, $value);
+}
+
+@function config($value) {
+    @return map-get($config, $value);
+}
+
+@function random-string($list) {
+    $result: null;
+    @for $i from 1 through length($list) {
+        $random: random(length($list));
+        $current: nth($list, $random);
+        $list: remove-nth($list, $random);
+        $result: $result#{$current};
+    }
+    @return $result;
+}
+
+@function remove-nth($list, $index) {
+    $result: ();
+    @for $i from 1 through length($list) {
+        @if $i != $index {
+            $result: append($result, nth($list, $i));
+        }
+    }
+    @return $result;
+}
+
+@mixin respond-to($breakpoint) {
+    @if type-of($breakpoint) == list {
+        @media (min-width: nth($breakpoint, 1)) and (max-width: nth($breakpoint, 2)) {
+            @content;
+        }
+    } @else {
+        @media (max-width: $breakpoint) {
+            @content;
+        }
+    }
+}
+
+// ----------------------------------
+
+body {
+    text-align: center;
+    background-color: color(background);
+}
+
+.wrapper {
+    position: absolute;
+    top: 70%;
+    left: 70%;
+    width: 100%;
+    font-size: 0;
+    transform: translate(-50%);
+}
+
+p {
+    font-family: font(family);
+    font-size: 50px;
+    font-weight: 500;
+    color: color(text);
+    opacity: 0.3;
+}
+
+.letter {
+    width: font(size);
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    overflow: hidden;
+    margin: 0 ceil(font(letter-spacing) / 2);
+    font-family: font(family);
+    font-size: font(size);
+    font-weight: 600;
+    line-height: font(size);
+    text-transform: uppercase;
+    color: color(text);
+    @include respond-to(625px) {
+        //font-size: 16px;
+        //width: 18px;
+    }
+    &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        word-break: break-all;
+        background-color: color(background);
+    }
+}
+
+// ----------------------------------
+
+@for $i from 1 through config(nb-letters) {
+    $length: length(config(mask-letters));
+    $random: random($length);
+    $steps: $random - 1;
+    $offset: font(size) * $steps * -1;
+    $delay: random(100) / 100;
+    $duration: $steps * (config(animation-length) / $random);
+    .letter:nth-child(#{$i}):before {
+        content: quote(random-string(config(mask-letters)));
+        margin-top: $offset;
+        animation-name: letter#{$i};
+        animation-duration: $duration - ($duration * $delay);
+        animation-delay: $delay * 1s;
+        animation-fill-mode: forwards;
+    }
+    @keyframes letter#{$i} {
+        from {
+            margin-top: $offset;
+        }
+        to {
+            margin-top: font(size);
+        }
+    }
+}
+
+@import url("https://fonts.googleapis.com/css?family=Montserrat:900");
+.wrapperdos {
+  animation: sliding-background 40s linear infinite;
+  background: url("https://images.unsplash.com/photo-1452697620382-f6543ead73b5") no-repeat left/120%;
+  height: 100vh;
+  text-align: center;
+  width: 100vw;
+}
+
+.title {
+  background: white;
+  color: black;
+  font-family: "Montserrat", sans-serif;
+  font-size: 35vw;
+  letter-spacing: 1vw;
+  line-height: 100vh;
+  margin: 0;
+  mix-blend-mode: lighten;
+  text-transform: uppercase;
+  text-shadow: 0 0 0px, 1px 1px black, 2px 2px black, 3px 3px black, 4px 4px black, 5px 5px black, 6px 6px black, 7px 7px black, 8px 8px black, 9px 9px black, 10px 10px black, 11px 11px black, 12px 12px black, 13px 13px black, 14px 14px black, 15px 15px black, 16px 16px black, 17px 17px black, 18px 18px black, 19px 19px black, 20px 20px black, 21px 21px black, 22px 22px black, 23px 23px black, 24px 24px black, 25px 25px black, 26px 26px black, 27px 27px black, 28px 28px black, 29px 29px black, 30px 30px black, 31px 31px black, 32px 32px black, 33px 33px black, 34px 34px black, 35px 35px black;
+}
+.title:before {
+  color: white;
+  content: attr(data-text);
+  margin-left: -1%;
+  margin-top: -1%;
+  position: absolute;
+}
+
+@keyframes sliding-background {
+  0%,
+  100% {
+    background-position: 0 40%;
+  }
+  50% {
+    background-position: 100% 40%;
+  }
+}
+
+svg.intro {
+  background: linear-gradient(135deg, #aa3bb1, #582a7e);
+  max-width: 800px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 30px 50px -20px rgb(46, 6, 66);
+  
+  .text { 
+    display: none;
+  }
+  &.go {
+    .text {
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      text-transform: uppercase;
+      display: block;
+    }
+    .text-stroke {
+      fill: none;
+      stroke: #51256f;
+      stroke-width: 2.8px;
+      stroke-dashoffset: -900;
+      stroke-dasharray: 900;
+      stroke-linecap: butt;
+      stroke-linejoin: round;
+      animation: dash 2.5s ease-in-out forwards;
+    }
+    .text-stroke:nth-child(2) {
+      animation-delay: .3s;
+    }
+    .text-stroke:nth-child(3) {
+      animation-delay: .9s;
+    }
+    .text-stroke-2 {
+      stroke: #f6bdfa;
+      animation-delay: 1.2s;
+    }
+    .text-stroke:nth-child(5) {
+      animation-delay: 1.5s;
+    }
+    .text-stroke:nth-child(6) {
+      animation-delay: 1.8s;
+    }
+  }
+}
+
+@keyframes dash {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.reload {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  outline: none!important;
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 8px 12px;
+  text-transform: uppercase;
+  z-index: 10;
+  cursor: pointer;
+  box-shadow: 0 6px 7px #350e4c;
+  transition: all .1s cubic-bezier(.67, .13, .1, .81);
+  &:hover {
+    box-shadow: 0 4px 4px #350e4c;
+    transform: translateY(1px);
+  }
+  &:active {
+    box-shadow: 0 1px 2px #244B94;
+    transform: translateY(2px);
+  }
+  svg {
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+  }
+}
