@@ -537,70 +537,70 @@
 			this.updateNavArrows();
 		},
 
-		place: function(){
-			if (this.isInline)
-				return;
-			var calendarWidth = this.picker.outerWidth(),
-				calendarHeight = this.picker.outerHeight(),
-				visualPadding = 10,
-				windowWidth = $window.width(),
-				windowHeight = $window.height(),
-				scrollTop = $window.scrollTop();
-
-			var zIndex = parseInt(this.element.parents().filter(function(){
-					return $(this).css('z-index') !== 'auto';
-				}).first().css('z-index'))+10;
-			var offset = this.component ? this.component.parent().offset() : this.element.offset();
-			var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(false);
-			var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(false);
-			var left = offset.left,
-				top = offset.top;
-
-			this.picker.removeClass(
-				'datepicker-orient-top datepicker-orient-bottom '+
-				'datepicker-orient-right datepicker-orient-left'
-			);
-
-			if (this.o.orientation.x !== 'auto'){
-				this.picker.addClass('datepicker-orient-' + this.o.orientation.x);
-				if (this.o.orientation.x === 'right')
-					left -= calendarWidth - width;
-			}
-			// auto x orientation is best-placement: if it crosses a window
-			// edge, fudge it sideways
-			else {
-				// Default to left
-				this.picker.addClass('datepicker-orient-left');
-				if (offset.left < 0)
-					left -= offset.left - visualPadding;
-				else if (offset.left + calendarWidth > windowWidth)
-					left = windowWidth - calendarWidth - visualPadding;
-			}
-
-			// auto y orientation is best-situation: top or bottom, no fudging,
-			// decision based on which shows more of the calendar
-			var yorient = this.o.orientation.y,
-				top_overflow, bottom_overflow;
-			if (yorient === 'auto'){
-				top_overflow = -scrollTop + offset.top - calendarHeight;
-				bottom_overflow = scrollTop + windowHeight - (offset.top + height + calendarHeight);
-				if (Math.max(top_overflow, bottom_overflow) === bottom_overflow)
-					yorient = 'top';
-				else
-					yorient = 'bottom';
-			}
-			this.picker.addClass('datepicker-orient-' + yorient);
-			if (yorient === 'top')
-				top += height;
-			else
-				top -= calendarHeight + parseInt(this.picker.css('padding-top'));
-
-			this.picker.css({
-				top: top,
-				left: left,
-				zIndex: zIndex
-			});
-		},
+		// place: function(){
+		// 	if (this.isInline)
+		// 		return;
+		// 	var calendarWidth = this.picker.outerWidth(),
+		// 		calendarHeight = this.picker.outerHeight(),
+		// 		visualPadding = 10,
+		// 		windowWidth = $window.width(),
+		// 		windowHeight = $window.height(),
+		// 		//scrollTop = $window.scrollTop();
+		//
+		// 	var zIndex = parseInt(this.element.parents().filter(function(){
+		// 			return $(this).css('z-index') !== 'auto';
+		// 		}).first().css('z-index'))+10;
+		// 	var offset = this.component ? this.component.parent().offset() : this.element.offset();
+		// 	var height = this.component ? this.component.outerHeight(true) : this.element.outerHeight(false);
+		// 	var width = this.component ? this.component.outerWidth(true) : this.element.outerWidth(false);
+		// 	var left = offset.left,
+		// 		top = offset.top;
+		//
+		// 	this.picker.removeClass(
+		// 		'datepicker-orient-top datepicker-orient-bottom '+
+		// 		'datepicker-orient-right datepicker-orient-left'
+		// 	);
+		//
+		// 	if (this.o.orientation.x !== 'auto'){
+		// 		this.picker.addClass('datepicker-orient-' + this.o.orientation.x);
+		// 		if (this.o.orientation.x === 'right')
+		// 			left -= calendarWidth - width;
+		// 	}
+		// 	// auto x orientation is best-placement: if it crosses a window
+		// 	// edge, fudge it sideways
+		// 	else {
+		// 		// Default to left
+		// 		this.picker.addClass('datepicker-orient-left');
+		// 		if (offset.left < 0)
+		// 			left -= offset.left - visualPadding;
+		// 		else if (offset.left + calendarWidth > windowWidth)
+		// 			left = windowWidth - calendarWidth - visualPadding;
+		// 	}
+		//
+		// 	// auto y orientation is best-situation: top or bottom, no fudging,
+		// 	// decision based on which shows more of the calendar
+		// 	var yorient = this.o.orientation.y,
+		// 		top_overflow, bottom_overflow;
+		// 	if (yorient === 'auto'){
+		// 		//top_overflow = -scrollTop + offset.top - calendarHeight;
+		// 		//bottom_overflow = scrollTop + windowHeight - (offset.top + height + calendarHeight);
+		// 		if (Math.max(top_overflow, bottom_overflow) === bottom_overflow)
+		// 			yorient = 'top';
+		// 		else
+		// 			yorient = 'bottom';
+		// 	}
+		// 	this.picker.addClass('datepicker-orient-' + yorient);
+		// 	if (yorient === 'top')
+		// 		top += height;
+		// 	else
+		// 		top -= calendarHeight + parseInt(this.picker.css('padding-top'));
+		//
+		// 	this.picker.css({
+		// 		top: top,
+		// 		left: left,
+		// 		zIndex: zIndex
+		// 	});
+		// },
 
 		_allow_update: true,
 		update: function(){
